@@ -10,4 +10,6 @@ service ChatService {
 
 message Message {
     string Text = 1;
+    int32 Ack = 2;
+    int32 Seq = 3;
 }
