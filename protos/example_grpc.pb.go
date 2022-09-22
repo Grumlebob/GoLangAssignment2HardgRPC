@@ -22,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ChatServiceClient interface {
-	RpcHeader(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Message, error)
+	GetHeader(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Message, error)
 }
 
 type chatServiceClient struct {
@@ -33,9 +33,9 @@ func NewChatServiceClient(cc grpc.ClientConnInterface) ChatServiceClient {
 	return &chatServiceClient{cc}
 }
 
-func (c *chatServiceClient) RpcHeader(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Message, error) {
+func (c *chatServiceClient) GetHeader(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Message, error) {
 	out := new(Message)
-	err := c.cc.Invoke(ctx, "/protos.ChatService/rpcHeader", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/protos.ChatService/GetHeader", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (c *chatServiceClient) RpcHeader(ctx context.Context, in *Message, opts ...
 // All implementations must embed UnimplementedChatServiceServer
 // for forward compatibility
 type ChatServiceServer interface {
-	RpcHeader(context.Context, *Message) (*Message, error)
+	GetHeader(context.Context, *Message) (*Message, error)
 	mustEmbedUnimplementedChatServiceServer()
 }
 
@@ -54,8 +54,8 @@ type ChatServiceServer interface {
 type UnimplementedChatServiceServer struct {
 }
 
-func (UnimplementedChatServiceServer) RpcHeader(context.Context, *Message) (*Message, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RpcHeader not implemented")
+func (UnimplementedChatServiceServer) GetHeader(context.Context, *Message) (*Message, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetHeader not implemented")
 }
 func (UnimplementedChatServiceServer) mustEmbedUnimplementedChatServiceServer() {}
 
@@ -70,20 +70,20 @@ func RegisterChatServiceServer(s grpc.ServiceRegistrar, srv ChatServiceServer) {
 	s.RegisterService(&ChatService_ServiceDesc, srv)
 }
 
-func _ChatService_RpcHeader_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ChatService_GetHeader_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Message)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ChatServiceServer).RpcHeader(ctx, in)
+		return srv.(ChatServiceServer).GetHeader(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/protos.ChatService/rpcHeader",
+		FullMethod: "/protos.ChatService/GetHeader",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServiceServer).RpcHeader(ctx, req.(*Message))
+		return srv.(ChatServiceServer).GetHeader(ctx, req.(*Message))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -96,8 +96,8 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ChatServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "rpcHeader",
-			Handler:    _ChatService_RpcHeader_Handler,
+			MethodName: "GetHeader",
+			Handler:    _ChatService_GetHeader_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

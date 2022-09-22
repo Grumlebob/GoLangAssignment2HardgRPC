@@ -5,7 +5,7 @@ option go_package = "https://github.com/Grumlebob/GoLangAssignment2HardgRPC/tree
 
 
 service ChatService {
-    rpc rpcHeader (Message) returns (Message) {}
+    rpc GetHeader (Message) returns (Message) {}
 }
 
 message Message {

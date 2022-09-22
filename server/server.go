@@ -15,9 +15,9 @@ type Server struct {
 	protos.ChatServiceServer
 }
 
-func (s *Server) rpcHeader(ctx context.Context, message *protos.Message) (*protos.Message, error) {
+func (s *Server) GetHeader(ctx context.Context, message *protos.Message) (*protos.Message, error) {
 	fmt.Printf("recieved: %v", message)
-	fmt.Printf("What is context? : %v", ctx)
+	//fmt.Printf("What is context? : %v", ctx)
 	//message.Ack = 4
 	//message.Seq = 5
 	return &protos.Message{}, nil
