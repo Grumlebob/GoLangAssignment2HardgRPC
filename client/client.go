@@ -30,6 +30,8 @@ func main() {
 func SendRequest(c protos.ChatServiceClient) {
 	// Between the curly brackets are nothing, because the .proto file expects no input.
 	message := protos.Message{Text: "Client sent first handshake, with Syn flag True and Seq 0", Ack: 0, Seq: 0}
+	fmt.Println(message.Text)
+
 	FirstHandshake, err := c.GetHeader(context.Background(), &message)
 	if err != nil {
 		log.Fatalf("Error when calling GetHeader(Message): %s", err)
@@ -38,13 +40,17 @@ func SendRequest(c protos.ChatServiceClient) {
 	for FirstHandshake.Ack != 1 {
 
 	}
-	fmt.Printf("Client recieved second handshake from server with Ack: %d \n", FirstHandshake.Ack)
+	fmt.Printf("Client recieved second handshake from server with Syn flag True and Ack: %d \n", FirstHandshake.Ack)
 
-	message = protos.Message{Text: "Client sent first handshake, with Syn flag True and Seq 0", Ack: 0, Seq: 0}
+	message = protos.Message{Text: "Third hardshake sent from Client with Seq", Seq: FirstHandshake.Seq + 1}
+	fmt.Println(message.Text)
+
 	ThirdHandshake, err := c.GetHeader(context.Background(), &message)
 	if err != nil {
 		log.Fatalf("Error when calling GetHeader(Message): %s", err)
 	}
-	fmt.Printf("Third hardshake sent from Client with Seq %v, And some additional fictional data \n", ThirdHandshake.Seq)
+
+	//Data exhange logic here
+	fmt.Printf("Recieved from server: %d \n", ThirdHandshake.Ack)
 
 }
