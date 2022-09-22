@@ -35,7 +35,7 @@ func SendRequest(c protos.ChatServiceClient) {
 	if err != nil {
 		log.Fatalf("Error when calling GetHeader(Message): %s", err)
 	}
-	fmt.Printf("Second handshake recieved from the server: %s", FirstHandshake)
+	fmt.Printf("Second handshake recieved from the server: %s \n", FirstHandshake)
 
 	ThirdHandshake, err := c.GetHeader(context.Background(), &message)
 	if err != nil {

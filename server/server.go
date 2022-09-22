@@ -16,7 +16,7 @@ type Server struct {
 }
 
 func (s *Server) GetHeader(ctx context.Context, message *protos.Message) (*protos.Message, error) {
-	fmt.Printf("recieved: %v", message) //måske noget gøgl her? jo, server skal printe et eller andet.
+	fmt.Printf("%v \n", message) //måske noget gøgl her? jo, server skal printe et eller andet.
 	var msgServer *protos.Message
 	if (message.Seq == 0) && (message.Ack == 0) {
 		msgServer = &protos.Message{Text: "Second handshake  sent from Server, with Syn flag True and Ack 1", Ack: 1, Seq: 1}
