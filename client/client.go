@@ -29,12 +29,18 @@ func main() {
 
 func SendRequest(c protos.ChatServiceClient) {
 	// Between the curly brackets are nothing, because the .proto file expects no input.
-	message := protos.Message{Text: "First handshake from client, with Syn flag True and Seq 0", Ack: 0, Seq: 0}
+	message := protos.Message{Text: "Server recieved first handshake sent from client, with Syn flag True and Seq 0", Ack: 0, Seq: 0}
 
-	response, err := c.GetHeader(context.Background(), &message)
+	FirstHandshake, err := c.GetHeader(context.Background(), &message)
 	if err != nil {
 		log.Fatalf("Error when calling GetHeader(Message): %s", err)
 	}
+	fmt.Printf("Second handshake recieved from the server: %s", FirstHandshake)
 
-	fmt.Printf("Third hardshake from Client, server connection established with Ack 1, Text: %v \n", response)
+	ThirdHandshake, err := c.GetHeader(context.Background(), &message)
+	if err != nil {
+		log.Fatalf("Error when calling GetHeader(Message): %s", err)
+	}
+	fmt.Printf("Third hardshake sent from Client with Ack 1, Text: %v \n", ThirdHandshake)
+
 }
