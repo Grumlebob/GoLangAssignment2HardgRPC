@@ -22,8 +22,8 @@ func (s *Server) GetHeader(ctx context.Context, message *protos.Message) (*proto
 		msgServer = &protos.Message{Text: "Second handshake  sent from Server, with Syn flag True and Ack 1", Ack: message.Seq + 1}
 		fmt.Printf("Server sending second handshake with Ack: %d \n", msgServer.Ack)
 	} else {
-		msgServer = &protos.Message{Text: "Exchanging data", Ack: message.Seq + 1}
-		fmt.Printf("Exchanging data : %s \n", msgServer)
+		fmt.Printf("Server recieved Seq %d and Ack %d \n", msgServer.Seq, msgServer.Ack)
+		msgServer = &protos.Message{Ack: message.Seq + 1}
 	}
 	return msgServer, nil
 }

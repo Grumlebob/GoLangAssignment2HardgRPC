@@ -42,7 +42,7 @@ func SendRequest(c protos.ChatServiceClient) {
 	}
 	fmt.Printf("Client recieved second handshake from server with Syn flag True and Ack: %d \n", FirstHandshake.Ack)
 
-	message = protos.Message{Text: "Third hardshake sent from Client with Seq", Seq: FirstHandshake.Seq + 1}
+	message = protos.Message{Text: "Client sent third hardshake, with Seq", Seq: FirstHandshake.Seq + 1}
 	fmt.Println(message.Text, message.Seq)
 
 	ThirdHandshake, err := c.GetHeader(context.Background(), &message)
@@ -51,13 +51,15 @@ func SendRequest(c protos.ChatServiceClient) {
 	}
 
 	//Data exhange logic here
-	fmt.Printf("Recieved from server, Ack: %d \n", ThirdHandshake.Ack)
+	fmt.Printf("Client Recieved from server, Ack: %d \n", ThirdHandshake.Ack)
 
 	for i := 0; i < 10; i++ {
+		message.Seq++
+		fmt.Printf("Client Sent to server Seq: %d \n", message.Seq)
 		dataSimulation, err := c.GetHeader(context.Background(), &message)
 		if err != nil {
 			log.Fatalf("Error when calling GetHeader(Message): %s", err)
 		}
-		fmt.Printf("Recieved from server, Ack: %d \n", dataSimulation.Ack)
+		fmt.Printf("Client recieved from server Ack: %d \n", dataSimulation.Ack)
 	}
 }
