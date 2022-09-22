@@ -17,7 +17,7 @@ type Server struct {
 
 func (s *Server) GetHeader(ctx context.Context, message *protos.Message) (*protos.Message, error) {
 	fmt.Printf("recieved: %v", message)
-	//fmt.Printf("What is context? : %v", ctx)
+	message.Text = "Hello from server"
 	//message.Ack = 4
 	//message.Seq = 5
 	return &protos.Message{}, nil
