@@ -24,24 +24,25 @@ func main() {
 	//  Create new Client from generated gRPC code from proto
 	c := protos.NewChatServiceClient(conn)
 
-	SendRequest(c)
+	tcpSimulation(c)
 }
 
-func SendRequest(c protos.ChatServiceClient) {
+func tcpSimulation(c protos.ChatServiceClient) {
 	message := protos.Message{Text: "Client sent first handshake, with Syn flag True and Seq 0", Ack: 0, Seq: 0}
 	fmt.Println(message.Text)
 
+	//First handshake
 	firstHandshake, err := c.GetHeader(context.Background(), &message)
 	if err != nil {
 		log.Fatalf("Error when calling GetHeader(Message): %s", err)
 	}
-	//WAIT FOR SERVER TO SEND SECOND HANDSHAKE
+	//Wait for second handshake
 	for firstHandshake.Ack != 1 {
 
 	}
 	fmt.Printf("Client recieved second handshake from server with Syn flag True and Ack: %d, and Seq: %d \n", firstHandshake.Ack, firstHandshake.Seq)
 
-	//Third handshake made explicit, but could be part of data exchange loop.
+	//Third handshake
 	message = protos.Message{Text: "Client sent third hardshake, with Ack: 1 and Seq: ", Ack: firstHandshake.Ack, Seq: firstHandshake.Seq + 1}
 	fmt.Println(message.Text, message.Seq)
 	thirdHandshake, err := c.GetHeader(context.Background(), &message)
