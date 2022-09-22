@@ -23,7 +23,8 @@ func (s *Server) GetHeader(ctx context.Context, message *protos.Message) (*proto
 		fmt.Printf("Server sending second handshake with Ack: %d \n", msgServer.Ack)
 	} else {
 		msgServer = &protos.Message{Seq: message.Seq, Ack: message.Seq + 1}
-		fmt.Printf("Server recieved Seq %d and sent Ack %d \n", msgServer.Seq, msgServer.Ack)
+		fmt.Println("Server acknowledged it got", msgServer.Seq)
+		fmt.Printf("Server expect next to be Seq %d \n", msgServer.Ack)
 	}
 	return msgServer, nil
 }
