@@ -9,6 +9,5 @@ service ChatService {
 }
 
 message Message {
-    int32 Ack = 1;
-    int32 Seq = 2;
+    string Text = 1;
 }
