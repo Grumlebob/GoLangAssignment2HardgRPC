@@ -12,12 +12,15 @@ import (
 )
 
 type Server struct {
-	protos.GetCurrentTimeServer
+	protos.ChatServiceServer
 }
 
-func (s *Server) GetTime(ctx context.Context, in *protos.GetTimeRequest) (*protos.GetTimeReply, error) {
-	fmt.Printf("Received XXX request")
-	return &protos.GetTimeReply{Reply: "Your reply here"}, nil
+func (s *Server) rpcHeader(ctx context.Context, message *protos.Message) (*protos.Message, error) {
+	fmt.Printf("recieved: %v", message)
+	fmt.Printf("What is context? : %v", ctx)
+	message.Ack = 4
+	message.Seq = 5
+	return &protos.Message{}, nil
 }
 
 func main() {
@@ -27,7 +30,7 @@ func main() {
 		log.Fatalf("Failed to listen on port 9080: %v", err)
 	}
 	grpcServer := grpc.NewServer()
-	protos.RegisterGetCurrentTimeServer(grpcServer, &Server{})
+	protos.RegisterChatServiceServer(grpcServer, &Server{})
 
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatalf("failed to server %v", err)

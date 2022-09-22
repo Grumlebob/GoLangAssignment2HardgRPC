@@ -18,86 +18,86 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// GetCurrentTimeClient is the client API for GetCurrentTime service.
+// ChatServiceClient is the client API for ChatService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type GetCurrentTimeClient interface {
-	GetTime(ctx context.Context, in *GetTimeRequest, opts ...grpc.CallOption) (*GetTimeReply, error)
+type ChatServiceClient interface {
+	RpcHeader(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Message, error)
 }
 
-type getCurrentTimeClient struct {
+type chatServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewGetCurrentTimeClient(cc grpc.ClientConnInterface) GetCurrentTimeClient {
-	return &getCurrentTimeClient{cc}
+func NewChatServiceClient(cc grpc.ClientConnInterface) ChatServiceClient {
+	return &chatServiceClient{cc}
 }
 
-func (c *getCurrentTimeClient) GetTime(ctx context.Context, in *GetTimeRequest, opts ...grpc.CallOption) (*GetTimeReply, error) {
-	out := new(GetTimeReply)
-	err := c.cc.Invoke(ctx, "/protos.getCurrentTime/getTime", in, out, opts...)
+func (c *chatServiceClient) RpcHeader(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Message, error) {
+	out := new(Message)
+	err := c.cc.Invoke(ctx, "/protos.ChatService/rpcHeader", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// GetCurrentTimeServer is the server API for GetCurrentTime service.
-// All implementations must embed UnimplementedGetCurrentTimeServer
+// ChatServiceServer is the server API for ChatService service.
+// All implementations must embed UnimplementedChatServiceServer
 // for forward compatibility
-type GetCurrentTimeServer interface {
-	GetTime(context.Context, *GetTimeRequest) (*GetTimeReply, error)
-	mustEmbedUnimplementedGetCurrentTimeServer()
+type ChatServiceServer interface {
+	RpcHeader(context.Context, *Message) (*Message, error)
+	mustEmbedUnimplementedChatServiceServer()
 }
 
-// UnimplementedGetCurrentTimeServer must be embedded to have forward compatible implementations.
-type UnimplementedGetCurrentTimeServer struct {
+// UnimplementedChatServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedChatServiceServer struct {
 }
 
-func (UnimplementedGetCurrentTimeServer) GetTime(context.Context, *GetTimeRequest) (*GetTimeReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetTime not implemented")
+func (UnimplementedChatServiceServer) RpcHeader(context.Context, *Message) (*Message, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RpcHeader not implemented")
 }
-func (UnimplementedGetCurrentTimeServer) mustEmbedUnimplementedGetCurrentTimeServer() {}
+func (UnimplementedChatServiceServer) mustEmbedUnimplementedChatServiceServer() {}
 
-// UnsafeGetCurrentTimeServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to GetCurrentTimeServer will
+// UnsafeChatServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ChatServiceServer will
 // result in compilation errors.
-type UnsafeGetCurrentTimeServer interface {
-	mustEmbedUnimplementedGetCurrentTimeServer()
+type UnsafeChatServiceServer interface {
+	mustEmbedUnimplementedChatServiceServer()
 }
 
-func RegisterGetCurrentTimeServer(s grpc.ServiceRegistrar, srv GetCurrentTimeServer) {
-	s.RegisterService(&GetCurrentTime_ServiceDesc, srv)
+func RegisterChatServiceServer(s grpc.ServiceRegistrar, srv ChatServiceServer) {
+	s.RegisterService(&ChatService_ServiceDesc, srv)
 }
 
-func _GetCurrentTime_GetTime_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetTimeRequest)
+func _ChatService_RpcHeader_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Message)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GetCurrentTimeServer).GetTime(ctx, in)
+		return srv.(ChatServiceServer).RpcHeader(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/protos.getCurrentTime/getTime",
+		FullMethod: "/protos.ChatService/rpcHeader",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GetCurrentTimeServer).GetTime(ctx, req.(*GetTimeRequest))
+		return srv.(ChatServiceServer).RpcHeader(ctx, req.(*Message))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// GetCurrentTime_ServiceDesc is the grpc.ServiceDesc for GetCurrentTime service.
+// ChatService_ServiceDesc is the grpc.ServiceDesc for ChatService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var GetCurrentTime_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "protos.getCurrentTime",
-	HandlerType: (*GetCurrentTimeServer)(nil),
+var ChatService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "protos.ChatService",
+	HandlerType: (*ChatServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "getTime",
-			Handler:    _GetCurrentTime_GetTime_Handler,
+			MethodName: "rpcHeader",
+			Handler:    _ChatService_RpcHeader_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

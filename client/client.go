@@ -22,19 +22,19 @@ func main() {
 	defer conn.Close()
 
 	//  Create new Client from generated gRPC code from proto
-	c := protos.NewGetCurrentTimeClient(conn)
+	c := protos.NewChatServiceClient(conn)
 
 	SendRequest(c)
 }
 
-func SendRequest(c protos.GetCurrentTimeClient) {
+func SendRequest(c protos.ChatServiceClient) {
 	// Between the curly brackets are nothing, because the .proto file expects no input.
-	message := protos.GetTimeRequest{}
+	message := protos.Message{}
 
-	response, err := c.GetTime(context.Background(), &message)
+	response, err := c.RpcHeader(context.Background(), &message)
 	if err != nil {
 		log.Fatalf("Error when calling XXX: %s", err)
 	}
 
-	fmt.Printf("Response from the Server: %s \n", response.Reply)
+	fmt.Printf("Response from the Server, Ack: %v  - Seq: %v \n", response.Ack, response.Seq)
 }
