@@ -1,6 +1,6 @@
 Help from: https://github.com/NaddiNadja/grpc101
 
-a) What are packages in your implementation? 
+a) What are packets in your implementation? 
 a2)What data structure do you use to transmit data and meta-data?
 
 
