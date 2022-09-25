@@ -52,7 +52,7 @@ func tcpSimulation(c protos.ChatServiceClient) {
 	fmt.Printf("Client Recieved from server, Ack: %d \n", thirdHandshake.Ack)
 
 	//Data exhange logic here
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 10; i++ {
 		message.Seq++
 		fmt.Printf("Client Sent to server fictional data with Seq: %d \n", message.Seq)
 		dataSimulation, err := c.GetHeader(context.Background(), &message)
