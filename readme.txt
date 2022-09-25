@@ -1,5 +1,12 @@
 Help from: https://github.com/NaddiNadja/grpc101
 
+To launch:
+open terminal in server folder:
+go run .
+
+Open another terminal in client folder:
+go run .
+
 a) What are packets in your implementation? 
 a2)What data structure do you use to transmit data and meta-data?
 Our packets consist of a message to illustrate the 3 handshakes, but primarily 2 primary integer types, being the Acknowledgement number and the Sequence number. We do not send actual data.
